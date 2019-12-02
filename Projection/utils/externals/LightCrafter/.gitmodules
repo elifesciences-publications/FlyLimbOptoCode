@@ -1,0 +1,3 @@
+[submodule "Externals/matlab-lcr"]
+	path = Externals/matlab-lcr
+	url = https://github.com/mermerico/matlab-lcr.git

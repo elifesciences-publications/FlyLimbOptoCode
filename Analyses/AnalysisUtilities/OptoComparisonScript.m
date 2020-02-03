@@ -61,6 +61,6 @@ hold off;
 xlabel('time (ms)');
 ylabel(seriesLabels);
 legend(legendStr);
-ConfAxis('fontSize', 16);
+ConfAxis(fontSize);
 title('Midlimb Hits');
 axis('square');

@@ -1,3 +1,5 @@
+function LimbActivationMeanKinematics(newData, suppressPlots, fontSize, centroidCorder, limbCorder, semiMajorAxis, semiMinorAxis, xShift, yShift)
+
 %% Set some parameters for the analysis
 
 % Window length
@@ -10,9 +12,6 @@ smoothPhase = false;
 % Whether to remove instances where multiple limbs are hit
 removeMultipleHits = true;
 
-% Suppress addtional plots
-supressPlots = true;
-
 % Various analysis parameters
 useRandomTrigger = false;
 nboot = 1000;
@@ -24,7 +23,7 @@ bootAlpha = 0.01; % Defines the confidence interval for the plots
 mmPerPix = 0.043;
 
 % Define desired line widths
-dashWidth = .5;
+dashWidth = 0.5;
 dataWidth = 1;
 
 % Define the y-limits of each of the plots
@@ -217,7 +216,7 @@ ylim([-3,3]);
 xlabel('hit_{\perp} (mm)');
 ylabel('hit_{||} (mm)');
 ylabel(cbar, 'v_{||} (fold change)');
-ConfAxis('fontSize', 16);
+ConfAxis(fontSize);
 
 % Yaw velocity: Plot the locations of each activation colored by yaw velocity change 
 MakeFigure;
@@ -234,7 +233,7 @@ ylim([-3,3]);
 xlabel('hit_{\perp} (mm)');
 ylabel('hit_{||} (mm)');
 ylabel(cbar, 'v_{r} (\circ/s)');
-ConfAxis('fontSize', 16);
+ConfAxis(fontSize);
 
 % Lateral velocity: Plot the locations of each activation colored by lateral velocity change 
 MakeFigure;
@@ -251,13 +250,13 @@ ylim([-3,3]);
 xlabel('hit_{\perp} (mm)');
 ylabel('hit_{||} (mm)');
 ylabel(cbar, 'v_{\perp} (mm/s)');
-ConfAxis('fontSize', 16);
+ConfAxis(fontSize);
 
 
 %% Distribution of phases of hit limb at activation onset
 
 % Check if this plot should be suppressed
-if ~supressPlots
+if ~suppressPlots
     
     % Define values for sampling the distribution
     xq = (0:0.01:1)';
@@ -289,7 +288,7 @@ if ~supressPlots
     xlabel('Phase of Hit Limb at Activation Onset (cycles)');
     ylabel('pdf (1/cycles)');
     ylim([0 0.3]);
-    ConfAxis('fontSize', 16);
+    ConfAxis(fontSize);
 end
 
 %% Kruskal-Wallis one-way analysis of variance
@@ -382,10 +381,11 @@ for ind = 1:3 % Loop through each body velocity component
     hold off;
     
     % Format the plot and add labels
+    xlim([min(t_ms), max(t_ms)]);
     xlabel('time (ms)');
     ylabel(seriesLabels{ind});
     legend(legendStr);
-    ConfAxis('fontSize', 16);
+    ConfAxis(fontSize);
     axis('square');
 end
 
@@ -453,7 +453,7 @@ for ind = 1:3
     xticklabels(legendStr);
     xtickangle(20);
     ylabel(seriesLabels{ind});
-    ConfAxis('fontSize', 16);
+    ConfAxis(fontSize);
     axis('square');
 end
 
@@ -484,10 +484,11 @@ for c = 1:length(vel_names)
         fprintf('%s, %s: %.2f to %.2f (%s) \n', hit_names{r}, vel_names{c}, clVel(r,c), cuVel(r,c), sig);
     end
 end
+
 %% Timeseries of mean relative phase
 
 % Check if this plot should be suppressed
-if ~supressPlots
+if ~suppressPlots
     
     % Compute relative phases
     phiRel = mod(Phisym(:,[1,2,3],:) - Phisym(:,[4,5,6],:),2*pi);
@@ -554,19 +555,21 @@ if ~supressPlots
         hold on;
         plot([-250,250], [0,0], '--k', 'linewidth', dashWidth, 'HandleVisibility','off');
         plot([0,0],[-0.15, 0.15], '--k', 'linewidth', dashWidth, 'HandleVisibility','off');
+        xlim([min(t_ms), max(t_ms)]);
         xlabel('time (ms)');
         ylabel('relative phase advance (cycles)');
         legend(legendStr);
         title(seriesLabels{ind});
-        ConfAxis('fontSize', 16);
+        ConfAxis(fontSize);
         axis('square');
     end
     
 end
+
 %% Mean relative phase advance
 
 % Check if this plot should be suppressed
-if ~supressPlots
+if ~suppressPlots
 
     % Compute relative phases
     phiRel = mod(Phisym(:,[1,2,3],:) - Phisym(:,[4,5,6],:),2*pi);
@@ -634,15 +637,16 @@ if ~supressPlots
         xticks(1:3);
         xticklabels(legendStr);
         title(seriesLabels{ind});
-        ConfAxis('fontSize', 16);
+        ConfAxis(fontSize);
         axis('square');
     end
     
 end
+
 %% Average timeseries of limb separation
 
 % Check if this plot should be suppressed
-if ~supressPlots
+if ~suppressPlots
     
     % Initialize some variables for storing data
     meanLimbDist = nan(length(t), 3, 3); % Mean limb distance
@@ -691,20 +695,22 @@ if ~supressPlots
         hold off;
 
         % Format the plot
+        xlim([min(t_ms), max(t_ms)]);
         xlabel('time (ms)');
         ylabel('limb separation (fractional change)');
         legend(seriesLabels);
         title(legendStr{ind});
         ylim([-0.15,0.15]);
         yticks(-0.15:0.05:0.15);
-        ConfAxis('fontSize', 16);
+        ConfAxis(fontSize);
         axis('square');
     end
 end
+
 %% Average limb separation
 
 % Check if this plot should be suppressed
-if ~supressPlots
+if ~suppressPlots
 
     % Initialize some variables
     meanLimbDist = nan(3, 3); % Mean limb distance
@@ -762,7 +768,9 @@ if ~supressPlots
         title(legendStr{ind});
         ylim([-0.15,0.15]);
         yticks(-0.15:0.05:0.15);
-        ConfAxis('fontSize', 16);
+        ConfAxis(fontSize);
         axis('square');
     end
+end
+
 end

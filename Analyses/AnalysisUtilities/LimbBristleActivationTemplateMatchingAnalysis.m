@@ -47,7 +47,7 @@ for gaitInd = 1:size(psi,1)
         ylim([0 1]);
         xlabel('time (ms)');
         ylabel(sprintf('coherence of %s global phase',gaitList{gaitInd}));
-        ConfAxis('fontSize', 16);
+        ConfAxis(fontSize);
         cbar = colorbar;
         ylabel(cbar, 'pdf(t)');
         caxis([0 4]);
@@ -79,7 +79,7 @@ for gaitInd = 1:size(psi,1)
         ylim([0 1]);
         xlabel('time (ms)');
         ylabel(sprintf('global %s phase (cycles modulo 1)',gaitList{gaitInd}));
-        ConfAxis('fontSize', 16);
+        ConfAxis(fontSize);
         cbar = colorbar;
         ylabel(cbar, 'pdf(t) (1/cycles)');
         caxis([0 0.25]);
@@ -146,6 +146,6 @@ for gaitInd = 1:size(psi,1)
     legend(legendStr, 'location','eastoutside');
     yticks(0:0.1:0.3);
     axis('square');
-    ConfAxis('fontSize', 16);
+    ConfAxis(fontSize);
     
 end

@@ -5,7 +5,7 @@
 % Set data paths
 SetTurningDataPaths;
 
-%% Load data from file and prepare data
+%% Load data from file
 
 % Load the desired data
 % NOTE: Select the desired genotype for creating each set of figures
@@ -13,11 +13,10 @@ load(bristle_datapath, 'newData');
 % load(gr5a_datapath, 'newData');
 % load(ctrl_datapath, 'newData');
 
-% Compute some additional variables required for subsequent analyses
-vfMin = 0.5;
-[ newData ] = PrepareTurningData(newData, vfMin);
+%% Set options for plotting
 
-%% Generate body hit panels
+% Font size
+fontSize = 12;
 
 % Set color scheme
 corder = [
@@ -30,16 +29,30 @@ corder = [
     0.650980392156863,0.462745098039216,0.113725490196078;
     0.400000000000000,0.400000000000000,0.400000000000000
     ];
-symQuadrantCorder = corder(1:2,:);
-quadrantCorder = corder(3:6,:);
-segmentCorder = corder(3:8,:);
-symSegmentCorder = corder(4:6,:);
 
-% Run the analysis script
-BodyActivationMeanKinematics;
+% Set color scheme
+centroidCorder = corder(1:3,:);
+limbCorder = [
+    0.346666666666667,0.536000000000000,0.690666666666667;
+    0.915294117647059,0.281568627450980,0.287843137254902;
+    0.441568627450980,0.749019607843137,0.432156862745098
+    ];
 
-% Clean up
-clearvars -except *datapath newData *order;
+%% Prepare data for analysis 
+
+% Compute some additional variables required for subsequent analyses
+vfMin = 0.5;
+[ newData ] = PrepareTurningData(newData, vfMin);
+
+%% Generate body hit panels
+
+% Suppress addtional plots
+suppressPlots = true;
+
+% Run the analysis function
+tic;
+BodyActivationMeanKinematics(newData, suppressPlots, fontSize, corder);
+fprintf('\nCompleted analysis of body activations in %f seconds.\n', toc);
 
 %% Generate limb hit panels
 
@@ -50,21 +63,17 @@ semiMinorAxis = 0.5; % mm
 xShift = 0;
 yShift = -0.2; % mm
 
-% Set color scheme
-centroidCorder = corder(1:3,:);
-limbCorder = [
-    0.346666666666667,0.536000000000000,0.690666666666667;
-    0.915294117647059,0.281568627450980,0.287843137254902;
-    0.441568627450980,0.749019607843137,0.432156862745098
-    ];
+% Suppress addtional plots
+suppressPlots = false;
 
-% Run the analysis script
-LimbActivationMeanKinematics;
-
-% Clean up
-clearvars -except *datapath ;
+% Run the analysis function
+tic;
+LimbActivationMeanKinematics(newData,...
+    suppressPlots, fontSize,centroidCorder, limbCorder,...
+    semiMajorAxis, semiMinorAxis, xShift, yShift)
+fprintf('\nCompleted analysis of limb activations in %f seconds.\n', toc);
 
 %% Generate the comparison plot
 
 % Plot comparison of midlimb hits
-OptoComparisonScript
+OptoComparisonScript;

@@ -1,3 +1,5 @@
+function BodyActivationMeanKinematics(newData, suppressPlots, fontSize, corder)
+
 %% Set some parameters for the analysis
 
 % Window length
@@ -20,10 +22,13 @@ dataWidth = 1;
 % Define the y limits for various plots
 yLimArray = [-200,200; -.25, 1.75; -7, 3];
 
-% Suppress addtional plots
-supressPlots = true;
-
 %% Set plotting options
+
+% Extract quadrant colorings from main color order
+symQuadrantCorder = corder(1:2,:);
+quadrantCorder = corder(3:6,:);
+segmentCorder = corder(3:8,:);
+symSegmentCorder = corder(4:6,:);
 
 % Define the colormaps
 ptSz = 100;
@@ -201,7 +206,7 @@ ylim([-2,2]);
 xlabel('hit_{\perp} (mm)');
 ylabel('hit_{||} (mm)');
 ylabel(cbar, 'v_{||} (fold change)');
-ConfAxis('fontSize', 16);
+ConfAxis(fontSize);
 
 % Plot the yaw velocity scatter
 MakeFigure;
@@ -218,7 +223,7 @@ ylim([-2,2]);
 xlabel('hit_{\perp} (mm)');
 ylabel('hit_{||} (mm)');
 ylabel(cbar, 'v_{r} (\circ/s)');
-ConfAxis('fontSize', 16);
+ConfAxis(fontSize);
 
 % Plot the lateral velocity scatter
 MakeFigure;
@@ -235,11 +240,11 @@ ylim([-2,2]);
 xlabel('hit_{\perp} (mm)');
 ylabel('hit_{||} (mm)');
 ylabel(cbar, 'v_{\perp} (mm/s)');
-ConfAxis('fontSize', 16);
+ConfAxis(fontSize);
 
 %% Mean timeseries, split by quadrant
 
-if ~supressPlots
+if ~suppressPlots
     
     % Initialize variables for storing values
     meanVel = nan(length(t), 4, 3); % timepoints x quadrants x vel components
@@ -290,10 +295,11 @@ if ~supressPlots
         end
         plot([0 0], ylim, '--k', 'linewidth', dashWidth, 'HandleVisibility','off');
         hold off;
+        xlim([min(t_ms), max(t_ms)]);
         xlabel('time (ms)');
         ylabel(seriesLabels{ind});
         legend(legendStr, 'location','northwest');
-        ConfAxis('fontSize', 16);
+        ConfAxis(fontSize);
         axis('square');
     end
     
@@ -301,7 +307,7 @@ end
 
 %% Mean kinematics, split by quadrant
 
-if ~supressPlots
+if ~suppressPlots
     
     % Initialize variables for storing the data
     meanVel = nan(4, 3);
@@ -363,7 +369,7 @@ if ~supressPlots
         xticklabels(legendStr);
         xtickangle(20);
         ylabel(seriesLabels{ind});
-        ConfAxis('fontSize', 16);
+        ConfAxis(fontSize);
         axis('square');
     end
     
@@ -371,7 +377,7 @@ end
 
 %% Mean timeseries, split fore / hind and left / right symmetrized
 
-if ~supressPlots
+if ~suppressPlots
     
     % Initialize some variables for storing values
     meanVel = nan(length(t), 2, 3); % Mean values
@@ -431,17 +437,19 @@ if ~supressPlots
         hold off;
         
         % Format the plot
+        xlim([min(t_ms), max(t_ms)]);
         xlabel('time (ms)');
         ylabel(seriesLabels{ind});
         legend(legendStr, 'location','northwest');
-        ConfAxis('fontSize', 16);
+        ConfAxis(fontSize);
         axis('square');
     end
     
 end
+
 %% Mean kinematics, split fore / hind and left / right symmetrized
 
-if ~supressPlots
+if ~suppressPlots
     
     % Initialize some variables for storing values
     meanVel = nan(2, 3);
@@ -509,15 +517,16 @@ if ~supressPlots
         xticklabels(legendStr);
         %     xtickangle(20);
         ylabel(seriesLabels{ind});
-        ConfAxis('fontSize', 16);
+        ConfAxis(fontSize);
         axis('square');
     end
     
 end
+
 %% Mean timeseries, split by segment
 
 % Check if this plot should be suppressed
-if ~supressPlots
+if ~suppressPlots
 
     % Initialize some variables
     meanVel = nan(length(t), 6, 3); % Mean velocity trace
@@ -570,10 +579,11 @@ if ~supressPlots
         end
         plot([0 0], ylim, '--k', 'linewidth', dashWidth, 'HandleVisibility','off');
         hold off;
+        xlim([min(t_ms), max(t_ms)]);
         xlabel('time (ms)');
         ylabel(seriesLabels{ind});
         legend(legendStr, 'location','northwest');
-        ConfAxis('fontSize', 16);
+        ConfAxis(fontSize);
         axis('square');
     end
 end
@@ -581,7 +591,7 @@ end
 %% Mean kinematics, split by segment
 
 % Check if this plot should be suppressed
-if ~supressPlots
+if ~suppressPlots
     
     % Initialize some variables
     meanVel = nan(6, 3); % Mean data
@@ -644,7 +654,7 @@ if ~supressPlots
         xticklabels(legendStr);
         xtickangle(20);
         ylabel(seriesLabels{ind});
-        ConfAxis('fontSize', 16);
+        ConfAxis(fontSize);
         axis('square');
         xlim([0 7]);
     end
@@ -707,10 +717,11 @@ for ind = 1:3
     end
     plot([0 0], ylim, '--k', 'linewidth', dashWidth, 'HandleVisibility','off');
     hold off;
+    xlim([min(t_ms), max(t_ms)]);
     xlabel('time (ms)');
     ylabel(seriesLabels{ind});
     legend(legendStr, 'location','northwest');
-    ConfAxis('fontSize', 16);
+    ConfAxis(fontSize);
     axis('square');
 end
 
@@ -781,7 +792,7 @@ for ind = 1:3
     xticklabels(legendStr);
     xtickangle(20);
     ylabel(seriesLabels{ind});
-    ConfAxis('fontSize', 16);
+    ConfAxis(fontSize);
     axis('square');
 end
 
@@ -811,4 +822,6 @@ for c = 1:length(vel_names)
         % Print the result
         fprintf('%s, %s: %.2f to %.2f (%s) \n', hit_names{r}, vel_names{c}, clVel(r,c), cuVel(r,c), sig);
     end
+end
+
 end

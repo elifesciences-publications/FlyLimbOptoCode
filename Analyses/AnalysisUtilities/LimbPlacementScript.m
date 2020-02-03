@@ -73,7 +73,7 @@ for i = 1:3
     xlabel('location_{\perp} (mm)');
     ylabel('location_{||} (mm)');
     ylabel(cbar, '1/mm^2');
-    ConfAxis('fontSize', 16);
+    ConfAxis(fontSize);
     axis('xy','equal','tight');
 
 end
@@ -129,7 +129,7 @@ for i = 1:3
     ylabel('location_{||} (mm)');
     ylabel(cbar, '1/mm^2');
     title({'Difference From Control',hit_strings{i}});
-    ConfAxis('fontSize', 16);
+    ConfAxis(fontSize);
     axis('xy','equal','tight');
 
 end

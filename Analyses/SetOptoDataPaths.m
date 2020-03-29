@@ -1,4 +1,4 @@
-%% SetTurningDataPaths.m
+%% SetOptoDataPaths.m
 % This script sets the paths to the .mat files containing the data and adds
 % the required code directories to the Matlab path
 

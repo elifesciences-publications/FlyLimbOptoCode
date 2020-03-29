@@ -1,9 +1,28 @@
 %% OptoMethodPaperFigureScript.m
-% A script to regenerate the panels (and more) from Optogenetic Methods
-% Paper
+% A script to regenerate the panels (and more) from 
+%
+%
+% 
+%
+%
+%     Copyright (C) 2020 Clark Lab, Yale University
+% 
+%     This program is free software: you can redistribute it and/or modify
+%     it under the terms of the GNU General Public License as published by
+%     the Free Software Foundation, either version 3 of the License, or
+%     (at your option) any later version.
+% 
+%     This program is distributed in the hope that it will be useful,
+%     but WITHOUT ANY WARRANTY; without even the implied warranty of
+%     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%     GNU General Public License for more details.
+% 
+%     You should have received a copy of the GNU General Public License
+%     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+%
 
 % Set data paths
-SetTurningDataPaths;
+SetOptoDataPaths;
 
 %% Load data from file
 
@@ -18,7 +37,6 @@ load(bristle_datapath, 'newData');
 % Font size
 fontSize = 12;
 
-% Set color scheme
 corder = [
     0.105882352941176,0.619607843137255,0.466666666666667;
     0.850980392156863,0.372549019607843,0.007843137254902;
@@ -30,7 +48,6 @@ corder = [
     0.400000000000000,0.400000000000000,0.400000000000000
     ];
 
-% Set color scheme
 centroidCorder = corder(1:3,:);
 limbCorder = [
     0.346666666666667,0.536000000000000,0.690666666666667;
@@ -42,7 +59,9 @@ limbCorder = [
 
 % Compute some additional variables required for subsequent analyses
 vfMin = 0.5;
+tic;
 [ newData ] = PrepareTurningData(newData, vfMin);
+fprintf('\nCompleted data preprocessing in %f seconds.\n', toc);
 
 %% Generate body hit panels
 
@@ -63,17 +82,10 @@ semiMinorAxis = 0.5; % mm
 xShift = 0;
 yShift = -0.2; % mm
 
-% Suppress addtional plots
-suppressPlots = false;
-
 % Run the analysis function
 tic;
 LimbActivationMeanKinematics(newData,...
-    suppressPlots, fontSize,centroidCorder, limbCorder,...
+    fontSize, centroidCorder, limbCorder, ...
     semiMajorAxis, semiMinorAxis, xShift, yShift)
 fprintf('\nCompleted analysis of limb activations in %f seconds.\n', toc);
 
-%% Generate the comparison plot
-
-% Plot comparison of midlimb hits
-OptoComparisonScript;

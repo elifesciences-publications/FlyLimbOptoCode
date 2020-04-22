@@ -1,7 +1,6 @@
 # FlyLimbOptoCode
 
-Code to perform localized optogenetic stimulation using a simple method. Details can be found in our forthcoming paper. 
-
+Code to perform localized optogenetic stimulation using a simple method, as described in our [paper](https://doi.org/10.7554/eLife.54183). If you find this helpful, please consider citing: DeAngelis, B.D.\*, Zavatone-Veth, J.A.\*, Gonzalez-Suarez, A.D., and Clark, D.A. Spatiotemporally precise optogenetic activation of sensory neurons in freely walking *Drosophila*. *eLife* 9: e54183 (2020). DOI: [10.7554/eLife.54183](https://doi.org/10.7554/eLife.54183). (\*equal contributions).
 
 ## Dependencies
 
